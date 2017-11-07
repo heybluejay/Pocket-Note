@@ -27,6 +27,16 @@ public class DocumentArea extends JPanel
 		add(textArea);
 	} 
 	
+	public void setText(String text)
+	{
+		textArea.setText(text);
+	}
+	
+	public String getText()
+	{
+		return textArea.getText();
+	}
+	
 	public void setTextColor(Color c)
 	{
 		textArea.setForeground(c);

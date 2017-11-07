@@ -1,8 +1,10 @@
 import java.awt.event.*;
+import java.io.File;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -28,12 +30,6 @@ public class MainMenuBar extends JMenuBar
 		JMenu themeMenu = new JMenu("Theme");
 		JMenu helpMenu = new JMenu("Help");
 		
-		// Adding the menu bar buttons.
-		this.add(fileMenu);
-		this.add(fontMenu);
-		this.add(colorMenu);
-		this.add(themeMenu);
-		this.add(helpMenu);
 		
 		// Creating the File menu buttons with hot keys.
 		JMenuItem newFileButton = new JMenuItem("New");
@@ -54,6 +50,52 @@ public class MainMenuBar extends JMenuBar
 		JRadioButton solarTheme = new JRadioButton("Solarized Theme");
 		JRadioButton darkTheme = new JRadioButton("Dark Theme");
 		JRadioButton retroTheme = new JRadioButton("Retro Theme");
+		
+		// Creating the Help menu buttons with hot keys.
+		JMenuItem aboutButton = new JMenuItem("About");
+		JMenuItem helpButton = new JMenuItem("Help");
+		// ToDo: Add a shortcuts button or put it under help sub button
+		
+		
+		// Adding the menu bar buttons.
+		this.add(fileMenu);
+		this.add(fontMenu);
+		this.add(colorMenu);
+		this.add(themeMenu);
+		this.add(helpMenu);
+		
+		// Adding the File menu buttons.
+		fileMenu.add(newFileButton);
+		fileMenu.add(openFileButton);
+		fileMenu.addSeparator();          // Create a divider
+		fileMenu.add(saveFileButton);
+		fileMenu.add(saveAsFileButton);
+		fileMenu.addSeparator();          //Create a divider
+		fileMenu.add(exitFileButton);
+		
+		colorMenu.add(fontColorButton);
+		
+		// Adding the Theme menu buttons as groups.
+		ButtonGroup radioButtonGroup = new ButtonGroup();
+		radioButtonGroup.add(defaultTheme);
+		radioButtonGroup.add(solarTheme);
+		radioButtonGroup.add(darkTheme);
+		radioButtonGroup.add(retroTheme);
+		
+		// Adding theme Radio Buttons
+		themeMenu.add(defaultTheme);
+		themeMenu.add(solarTheme);
+		themeMenu.add(darkTheme);
+		themeMenu.add(retroTheme);
+		
+		// Adding the Help menu buttons.
+		helpMenu.add(aboutButton);
+		helpMenu.add(helpButton);
+		
+	    JColorChooser fontColorChooser = new JColorChooser();
+	    fontColorChooser.setPreviewPanel(new JPanel());
+	    
+	    JFileChooser fileChooser = new JFileChooser();
 		
 		// Radio Button Listeners
 		ActionListener radioButtonListener = new ActionListener()
@@ -81,23 +123,6 @@ public class MainMenuBar extends JMenuBar
 			
 		};
 		
-		// Creating the Help menu buttons with hot keys.
-		JMenuItem aboutButton = new JMenuItem("About");
-		JMenuItem helpButton = new JMenuItem("Help");
-		// ToDo: Add a shortcuts button or put it under help sub button
-		
-		// Adding the File menu buttons.
-		fileMenu.add(newFileButton);
-		fileMenu.add(openFileButton);
-		fileMenu.addSeparator();          // Create a divider
-		fileMenu.add(saveFileButton);
-		fileMenu.add(saveAsFileButton);
-		fileMenu.addSeparator();          //Create a divider
-		fileMenu.add(exitFileButton);
-		
-	    JColorChooser fontColorChooser = new JColorChooser();
-	    fontColorChooser.setPreviewPanel(new JPanel());
-		
 	    ActionListener colorSubmit = new ActionListener()
 	    {
 	    	public void actionPerformed(ActionEvent e)
@@ -116,28 +141,44 @@ public class MainMenuBar extends JMenuBar
 			}
 		});
 		
-		colorMenu.add(fontColorButton);
+		openFileButton.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				int input = fileChooser.showOpenDialog(parent);
+				if(input == JFileChooser.APPROVE_OPTION)
+				{
+					File file = fileChooser.getSelectedFile();
+					parent.openFile(file.getPath());
+				}
+			}
+			
+		});
 		
-		// Adding the Theme menu buttons as groups.
-		ButtonGroup radioButtonGroup = new ButtonGroup();
-		radioButtonGroup.add(defaultTheme);
-		radioButtonGroup.add(solarTheme);
-		radioButtonGroup.add(darkTheme);
-		radioButtonGroup.add(retroTheme);
+		saveAsFileButton.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				int input = fileChooser.showSaveDialog(parent);
+				if(input == JFileChooser.APPROVE_OPTION)
+				{
+					File file = fileChooser.getSelectedFile();
+					
+				}
+			}
+			
+		});
 		
-		// Adding theme Radio Buttons
-		themeMenu.add(defaultTheme);
-		themeMenu.add(solarTheme);
-		themeMenu.add(darkTheme);
-		themeMenu.add(retroTheme);
+		
 		
 		defaultTheme.addActionListener(radioButtonListener);
 		solarTheme.addActionListener(radioButtonListener);
 		darkTheme.addActionListener(radioButtonListener);
 		retroTheme.addActionListener(radioButtonListener);
 		
-		// Adding the Help menu buttons.
-		helpMenu.add(aboutButton);
-		helpMenu.add(helpButton);
 	}
 }

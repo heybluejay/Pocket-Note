@@ -1,6 +1,11 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -19,6 +24,7 @@ public class TextEditor extends JFrame
 	DocumentArea document = new DocumentArea();
 	MainMenuBar menuBar = new MainMenuBar(this);
 	UIDefaults originalDefaults;
+	String currentFilePath;
 
 	//Constructor
 	public TextEditor()
@@ -40,15 +46,33 @@ public class TextEditor extends JFrame
 		add(document, BorderLayout.CENTER);
 
 		setTheme(OceanTheme.class);
-	}
 		
-	public static void main(String[] args)
-	{
-		// Displays and runs the program.
-		TextEditor mainWindow = new TextEditor();
-		mainWindow.setVisible(true);
+		openFile("E:/Projects/Pocket-Note/test.txt");
+		
+		
 	}
-
+	
+	public void openFile(String path)
+	{
+		try
+		{
+			String fileData = String.join("\n", Files.readAllLines(Paths.get(path)));
+			document.setText(fileData);
+			
+		}
+		catch(IOException exception)
+		{
+			System.out.println("File not found!");
+		}
+		
+	}
+	
+	public void saveFile(String path)
+	{
+		String outputData 
+	}
+	
+	// This method is used to change the theme.
 	public void setTheme(Class<? extends MetalTheme> themeClass)
 	{
 		// Reset UIManager's style stuff to the LookAndFeel defaults so that themes don't have to explicitly replace each other's values.
@@ -69,5 +93,12 @@ public class TextEditor extends JFrame
 
 	    // Refresh all the components with the new Look and Feel.
 		SwingUtilities.updateComponentTreeUI(this);
+	}
+		
+	public static void main(String[] args)
+	{
+		// Displays and runs the program.
+		TextEditor mainWindow = new TextEditor();
+		mainWindow.setVisible(true);
 	}
 }
