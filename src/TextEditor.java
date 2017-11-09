@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,28 +50,42 @@ public class TextEditor extends JFrame
 		setTheme(OceanTheme.class);
 		
 		openFile("E:/Projects/Pocket-Note/test.txt");
-		
-		
 	}
 	
 	public void openFile(String path)
 	{
 		try
 		{
-			String fileData = String.join("\n", Files.readAllLines(Paths.get(path)));
-			document.setText(fileData);
+			FileInputStream fileInput = new FileInputStream(path);
+			byte[] fileData = new byte[fileInput.available()];
 			
+			fileInput.read(fileData);
+			document.setText(new String(fileData));
+			
+			fileInput.close();			
 		}
 		catch(IOException exception)
 		{
 			System.out.println("File not found!");
 		}
-		
 	}
 	
 	public void saveFile(String path)
 	{
-		String outputData 
+		try
+		{
+			FileOutputStream fileOutput = new FileOutputStream(path);
+			byte[] fileData = document.getText().getBytes();
+			
+			fileOutput.write(fileData);
+			document.setText(new String(fileData));
+			
+			fileOutput.close();			
+		}
+		catch(IOException exception)
+		{
+			System.out.println("File not found!");
+		}
 	}
 	
 	// This method is used to change the theme.
@@ -77,6 +93,10 @@ public class TextEditor extends JFrame
 	{
 		// Reset UIManager's style stuff to the LookAndFeel defaults so that themes don't have to explicitly replace each other's values.
 	    UIManager.getDefaults().clear();
+	    Font defaultFont = new Font("SansSerif", Font.PLAIN, 13);
+	    UIManager.put("Menu.font", defaultFont);
+	    UIManager.put("MenuItem.font", defaultFont);
+	    UIManager.put("RadioButton.font", defaultFont);
 
 	    try
 		{

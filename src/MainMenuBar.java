@@ -1,5 +1,6 @@
 import java.awt.event.*;
 import java.io.File;
+import java.nio.file.Paths;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JColorChooser;
@@ -10,6 +11,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.OceanTheme;
 
 public class MainMenuBar extends JMenuBar
@@ -36,10 +40,12 @@ public class MainMenuBar extends JMenuBar
 		newFileButton.setMnemonic('n');
 		JMenuItem openFileButton = new JMenuItem("Open...");
 		openFileButton.setMnemonic('o');
+		openFileButton.setAccelerator(KeyStroke.getKeyStroke("control O"));
 		JMenuItem saveFileButton = new JMenuItem("Save");
 		saveFileButton.setMnemonic('s');
 		JMenuItem saveAsFileButton = new JMenuItem("Save As...");
 		saveAsFileButton.setMnemonic('a');
+		saveAsFileButton.setAccelerator(KeyStroke.getKeyStroke("control shift S"));
 		JMenuItem exitFileButton = new JMenuItem("Exit");
 		exitFileButton.setMnemonic('x');
 		
@@ -96,6 +102,8 @@ public class MainMenuBar extends JMenuBar
 	    fontColorChooser.setPreviewPanel(new JPanel());
 	    
 	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Text File (*.txt)", "txt"));
+	    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Data File (*.dat)", "dat"));
 		
 		// Radio Button Listeners
 		ActionListener radioButtonListener = new ActionListener()
@@ -167,12 +175,24 @@ public class MainMenuBar extends JMenuBar
 				if(input == JFileChooser.APPROVE_OPTION)
 				{
 					File file = fileChooser.getSelectedFile();
+
+					String savePath = file.getPath();
 					
+					if (fileChooser.getFileFilter() instanceof FileNameExtensionFilter)
+					{
+						FileNameExtensionFilter currentFilter = (FileNameExtensionFilter)fileChooser.getFileFilter();
+						
+						if (Paths.get(savePath).getFileName().toString().lastIndexOf('.') == -1)
+						{
+							savePath += "." + currentFilter.getExtensions()[0];
+						}
+					}
+					
+					parent.saveFile(savePath);
 				}
 			}
 			
 		});
-		
 		
 		
 		defaultTheme.addActionListener(radioButtonListener);
