@@ -41,4 +41,9 @@ public class DocumentArea extends JPanel
 	{
 		textArea.setForeground(c);
 	}
+	
+	public void setFontStyle(Font font)
+	{
+		textArea.setFont(font);
+	}
 }

@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.event.*;
 import java.io.File;
 import java.nio.file.Paths;
@@ -9,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
@@ -38,18 +40,21 @@ public class MainMenuBar extends JMenuBar
 		// Creating the File menu buttons with hot keys.
 		JMenuItem newFileButton = new JMenuItem("New");
 		newFileButton.setMnemonic('n');
+		newFileButton.setToolTipText("Click here to clear the page.");
 		JMenuItem openFileButton = new JMenuItem("Open...");
 		openFileButton.setMnemonic('o');
 		openFileButton.setAccelerator(KeyStroke.getKeyStroke("control O"));
+		openFileButton.setToolTipText("Click here to clear the page and open a new file.");
 		JMenuItem saveFileButton = new JMenuItem("Save");
 		saveFileButton.setMnemonic('s');
+		saveFileButton.setToolTipText("Click here to save the file at it's current location");
 		JMenuItem saveAsFileButton = new JMenuItem("Save As...");
 		saveAsFileButton.setMnemonic('a');
 		saveAsFileButton.setAccelerator(KeyStroke.getKeyStroke("control shift S"));
+		saveAsFileButton.setToolTipText("Click here to save the file at a new location.");
 		JMenuItem exitFileButton = new JMenuItem("Exit");
 		exitFileButton.setMnemonic('x');
-		
-		JMenuItem fontColorButton = new JMenuItem("Font Color...");
+		exitFileButton.setToolTipText("Click here to exit the application.");
 		
 		// Creating the Theme menu buttons.
 		JRadioButton defaultTheme = new JRadioButton("Default Theme");
@@ -57,11 +62,15 @@ public class MainMenuBar extends JMenuBar
 		JRadioButton darkTheme = new JRadioButton("Dark Theme");
 		JRadioButton retroTheme = new JRadioButton("Retro Theme");
 		
+		// Creating the Font Button. Font Button changes the font face type.
+		JMenuItem fontButton = new JMenuItem("Font Style...");
+		// Creating the Color button. Color button changes font color.
+	    JMenuItem fontColorButton = new JMenuItem("Font Color...");
 		// Creating the Help menu buttons with hot keys.
 		JMenuItem aboutButton = new JMenuItem("About");
 		JMenuItem helpButton = new JMenuItem("Help");
-		// ToDo: Add a shortcuts button or put it under help sub button
-		
+
+
 		
 		// Adding the menu bar buttons.
 		this.add(fileMenu);
@@ -78,6 +87,8 @@ public class MainMenuBar extends JMenuBar
 		fileMenu.add(saveAsFileButton);
 		fileMenu.addSeparator();          //Create a divider
 		fileMenu.add(exitFileButton);
+		
+		fontMenu.add(fontButton);
 		
 		colorMenu.add(fontColorButton);
 		
@@ -105,6 +116,16 @@ public class MainMenuBar extends JMenuBar
 	    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Text File (*.txt)", "txt"));
 	    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Data File (*.dat)", "dat"));
 		
+		FontStyleDialog fontStyleDialog = new FontStyleDialog(parent, parent.document);
+	    
+	    fontButton.addActionListener(new ActionListener()
+	    {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				fontStyleDialog.setVisible(true);
+			}
+	    });
 		// Radio Button Listeners
 		ActionListener radioButtonListener = new ActionListener()
 		{
@@ -149,9 +170,18 @@ public class MainMenuBar extends JMenuBar
 			}
 		});
 		
+		newFileButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				parent.document.setText("");
+				parent.currentFilePath = null;
+			}
+		});
+		
 		openFileButton.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -159,8 +189,26 @@ public class MainMenuBar extends JMenuBar
 				if(input == JFileChooser.APPROVE_OPTION)
 				{
 					File file = fileChooser.getSelectedFile();
-					parent.openFile(file.getPath());
+					parent.currentFilePath = file.getPath();
+					parent.openFile(parent.currentFilePath);
 				}
+			}	
+		});
+		
+		saveFileButton.addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+					if (parent.currentFilePath == null)
+					{
+						saveAsFileButton.doClick();
+					}
+					else
+					{
+						parent.saveFile(parent.currentFilePath);
+					}
 			}
 			
 		});
@@ -189,11 +237,49 @@ public class MainMenuBar extends JMenuBar
 					}
 					
 					parent.saveFile(savePath);
+					parent.currentFilePath = savePath;
 				}
 			}
 			
 		});
 		
+		exitFileButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				parent.setVisible(false);
+				parent.dispose();
+			}
+			
+		});
+		
+		aboutButton.addActionListener(new ActionListener()
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				JOptionPane.showMessageDialog(parent, "This is a simple text editing application.");
+			}
+		});
+		
+		helpButton.addActionListener(new ActionListener()
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				JOptionPane.showMessageDialog(parent, "File: \n"
+						+ "Your typical file options. You can save and open files here. \n"
+						+ "Font: \n"
+						+ "You can change your font style and typeface here. \n"
+						+ "Color:\n"
+						+ "You can change your font color here.\n"
+						+ "Themes: \n"
+						+ "This allows you to change your document colors. they are preset.");
+			}
+		});
 		
 		defaultTheme.addActionListener(radioButtonListener);
 		solarTheme.addActionListener(radioButtonListener);

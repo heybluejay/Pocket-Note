@@ -16,6 +16,7 @@ public class RetroTheme extends DefaultMetalTheme
 		UIManager.put("RadioButton.selectionBackground", new ColorUIResource(0xfbedd2));
 		UIManager.put("Button.background", new ColorUIResource(0x84bf9e));
 		UIManager.put("TextArea.selectionBackground", new ColorUIResource(0x84bf9e));
+		UIManager.put("ToolTip.background", new ColorUIResource(0x84bf9e));
 	}
 	
 	public String getName()
@@ -59,10 +60,10 @@ public class RetroTheme extends DefaultMetalTheme
 	}
 	
 	
-	public ColorUIResource getPrimaryControl()
-	{
-		return new ColorUIResource(0xff0000);
-	}
+	//public ColorUIResource getPrimaryControl()
+	//{
+	//	return new ColorUIResource(0xff0000);
+	//}
 
 	public ColorUIResource getPrimaryControlShadow()
 	{

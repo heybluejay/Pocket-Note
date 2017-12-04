@@ -14,6 +14,7 @@ public class DarkTheme extends DefaultMetalTheme
 		UIManager.put("TextArea.selectionBackground", new ColorUIResource(0x688c7f));
 		UIManager.put("Menu.foreground", new ColorUIResource(0x7ca687));
 		UIManager.put("MenuItem.foreground", new ColorUIResource(0x7ca687));
+		UIManager.put("ToolTip.background", new ColorUIResource(0x7ca687));
 
 	}
 	
@@ -57,10 +58,10 @@ public class DarkTheme extends DefaultMetalTheme
 		return new ColorUIResource(0x2d5559);
 	}
 
-	public ColorUIResource getPrimaryControl()
-	{
-		return new ColorUIResource(0xff0000);
-	}
+	//public ColorUIResource getPrimaryControl()
+	//{
+	//	return new ColorUIResource(0xff0000);
+	//}
 
 	public ColorUIResource getPrimaryControlShadow()
 	{

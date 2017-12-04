@@ -49,7 +49,7 @@ public class TextEditor extends JFrame
 
 		setTheme(OceanTheme.class);
 		
-		openFile("E:/Projects/Pocket-Note/test.txt");
+		//openFile("E:/Projects/Pocket-Note/test.txt");
 	}
 	
 	public void openFile(String path)

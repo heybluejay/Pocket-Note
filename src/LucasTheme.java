@@ -8,9 +8,9 @@ public class LucasTheme extends DefaultMetalTheme
 	public LucasTheme()
 	{
 		UIManager.put("RadioButton.background", new ColorUIResource(0xe7b590));
-		//UIManager.put("RadioButton.focus", new ColorUIResource(0xff0000)); //new ColorUIResource(0xff0000)
 		UIManager.put("RadioButton.selectionBackground", new ColorUIResource(0xfbedd2));
 		UIManager.put("Button.background", new ColorUIResource(0xfde6cc));
+		UIManager.put("ToolTip.background", new ColorUIResource(0xfde6cc));
 		
 	}
 	
@@ -59,10 +59,10 @@ public class LucasTheme extends DefaultMetalTheme
 		return new ColorUIResource(0xfbedd2);
 	}
 	
-	public ColorUIResource getPrimaryControl()
-	{
-		return new ColorUIResource(0xff0000);
-	}
+	//public ColorUIResource getPrimaryControl()
+	//{
+	//	return new ColorUIResource(0xff0000);
+	//}
 
 	public ColorUIResource getPrimaryControlShadow()
 	{
