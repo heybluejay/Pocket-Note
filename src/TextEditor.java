@@ -1,3 +1,7 @@
+//Pocket Note
+//By Sidney Harwood
+//11/2017
+
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
