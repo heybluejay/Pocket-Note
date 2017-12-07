@@ -1,5 +1,4 @@
 import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -22,7 +21,7 @@ public class FontStyleDialog extends JDialog
 		JComboBox<String> fontComboBox = new JComboBox<String>(fontFamilyNames);
 		
 		Integer[] fontSizes = { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
-		JComboBox<Integer> fontSizeComboBox = new JComboBox(fontSizes);
+		JComboBox<Integer> fontSizeComboBox = new JComboBox<Integer>(fontSizes);
 		
 		JButton submitButton = new JButton("OK");
 		

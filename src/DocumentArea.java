@@ -1,7 +1,4 @@
 import java.awt.*;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;

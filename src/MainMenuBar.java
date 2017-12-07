@@ -1,4 +1,3 @@
-import java.awt.Font;
 import java.awt.event.*;
 import java.io.File;
 import java.nio.file.Paths;
@@ -14,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.metal.OceanTheme;
 
