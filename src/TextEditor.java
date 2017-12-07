@@ -1,19 +1,8 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.plaf.metal.OceanTheme;
@@ -34,7 +23,9 @@ public class TextEditor extends JFrame
 		MetalLookAndFeel laf = (MetalLookAndFeel) UIManager.getLookAndFeel();
 		originalDefaults = (UIDefaults) (laf.getDefaults()).clone();
 				
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		
+		this.addWindowListener(new ExitWindowListener());
 		
 		// Setting up our frame.
 		setTitle("Pocket Note");
@@ -42,16 +33,17 @@ public class TextEditor extends JFrame
 		setLocation(400,200);
 		setLayout(new BorderLayout());
 		
+		// Adding the top menu bar.
 		add(menuBar, BorderLayout.NORTH);
 				
 		// Adding the write-able area.
 		add(document, BorderLayout.CENTER);
 
 		setTheme(OceanTheme.class);
-		
 		//openFile("E:/Projects/Pocket-Note/test.txt");
 	}
 	
+	// Handles opening files.
 	public void openFile(String path)
 	{
 		try
@@ -62,7 +54,8 @@ public class TextEditor extends JFrame
 			fileInput.read(fileData);
 			document.setText(new String(fileData));
 			
-			fileInput.close();			
+			fileInput.close();
+			document.setModified(false);
 		}
 		catch(IOException exception)
 		{
@@ -70,6 +63,7 @@ public class TextEditor extends JFrame
 		}
 	}
 	
+	// Handles saving files.
 	public void saveFile(String path)
 	{
 		try
@@ -80,7 +74,8 @@ public class TextEditor extends JFrame
 			fileOutput.write(fileData);
 			document.setText(new String(fileData));
 			
-			fileOutput.close();			
+			fileOutput.close();
+			document.setModified(false);	
 		}
 		catch(IOException exception)
 		{
@@ -113,6 +108,30 @@ public class TextEditor extends JFrame
 
 	    // Refresh all the components with the new Look and Feel.
 		SwingUtilities.updateComponentTreeUI(this);
+	}
+	
+	// Displays an unsaved changes dialog prompting the user to save, or exit without saving.
+	public boolean showUnsavedChangesDialog()
+	{
+		int dialogResult = JOptionPane.showConfirmDialog(this, "You have unsaved changes! Would you like to save your changes?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+		if (dialogResult == JOptionPane.YES_OPTION)
+		{
+			if (currentFilePath == null)
+			{
+				menuBar.saveAsFileButton.doClick();
+			}
+			else
+			{
+				saveFile(currentFilePath);
+			}
+			return true;
+		}
+		else if (dialogResult == JOptionPane.NO_OPTION)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 		
 	public static void main(String[] args)

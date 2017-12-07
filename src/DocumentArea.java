@@ -1,9 +1,16 @@
 import java.awt.*;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class DocumentArea extends JPanel
 {
+	private boolean modified = false;
+	
 	private static final long serialVersionUID = 1L;
 	JTextArea textArea;
 	
@@ -25,7 +32,38 @@ public class DocumentArea extends JPanel
 		textArea.setBorder(border);
 		
 		add(textArea);
-	} 
+		
+		textArea.getDocument().addDocumentListener(new DocumentListener()
+		{
+			
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				modified = true;
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				modified = true;
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+			}
+		});
+	}
+	
+	public void setModified(boolean newValue)
+	{
+		modified = newValue;
+	}
+	
+	public boolean getModified()
+	{
+		return modified;
+	}
 	
 	public void setText(String text)
 	{

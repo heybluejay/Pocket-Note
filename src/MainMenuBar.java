@@ -24,6 +24,7 @@ public class MainMenuBar extends JMenuBar
 	
 	TextEditor parent;
 	JDialog fontColorPopup;
+	JMenuItem saveAsFileButton;
 
 	public MainMenuBar(TextEditor parent)
 	{
@@ -48,7 +49,7 @@ public class MainMenuBar extends JMenuBar
 		JMenuItem saveFileButton = new JMenuItem("Save");
 		saveFileButton.setMnemonic('s');
 		saveFileButton.setToolTipText("Click here to save the file at it's current location");
-		JMenuItem saveAsFileButton = new JMenuItem("Save As...");
+		saveAsFileButton = new JMenuItem("Save As...");
 		saveAsFileButton.setMnemonic('a');
 		saveAsFileButton.setAccelerator(KeyStroke.getKeyStroke("control shift S"));
 		saveAsFileButton.setToolTipText("Click here to save the file at a new location.");
@@ -67,10 +68,8 @@ public class MainMenuBar extends JMenuBar
 		// Creating the Color button. Color button changes font color.
 	    JMenuItem fontColorButton = new JMenuItem("Font Color...");
 		// Creating the Help menu buttons with hot keys.
-		JMenuItem aboutButton = new JMenuItem("About");
-		JMenuItem helpButton = new JMenuItem("Help");
-
-
+		JMenuItem aboutButton = new JMenuItem("About...");
+		JMenuItem helpButton = new JMenuItem("Help...");
 		
 		// Adding the menu bar buttons.
 		this.add(fileMenu);
@@ -175,8 +174,14 @@ public class MainMenuBar extends JMenuBar
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				if (parent.document.getModified() && parent.showUnsavedChangesDialog() == false)
+				{
+					return;
+				}
+				
 				parent.document.setText("");
 				parent.currentFilePath = null;
+				parent.document.setModified(false);
 			}
 		});
 		
@@ -185,6 +190,11 @@ public class MainMenuBar extends JMenuBar
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
+				if (parent.document.getModified() && parent.showUnsavedChangesDialog() == false)
+				{
+					return;
+				}
+			
 				int input = fileChooser.showOpenDialog(parent);
 				if(input == JFileChooser.APPROVE_OPTION)
 				{
@@ -197,20 +207,18 @@ public class MainMenuBar extends JMenuBar
 		
 		saveFileButton.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-					if (parent.currentFilePath == null)
-					{
-						saveAsFileButton.doClick();
-					}
-					else
-					{
-						parent.saveFile(parent.currentFilePath);
-					}
+				if (parent.currentFilePath == null)
+				{
+					saveAsFileButton.doClick();
+				}
+				else
+				{
+					parent.saveFile(parent.currentFilePath);
+				}
 			}
-			
 		});
 		
 		saveAsFileButton.addActionListener(new ActionListener()
